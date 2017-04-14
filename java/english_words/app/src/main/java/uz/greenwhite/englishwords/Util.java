@@ -5,9 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.StandardSocketOptions;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -18,21 +17,51 @@ class Util {
         return v != null ? v : d;
     }
 
-    @SuppressWarnings("Since15")
-    static void sort(ArrayList<Word> words, final HashMap<String, Integer> stats) {
-        final Random random = new Random();
-        Collections.sort(words, new Comparator<Word>() {
-            @Override
-            public int compare(Word r, Word l) {
-                int rN = nvl(stats.get(r.english), new Integer(0));
-                int lN = nvl(stats.get(l.english), new Integer(0));
-                if (rN != lN) {
-                    return rN - lN;
-                } else {
-                    return random.nextBoolean() ? 1 : -1;
-                }
+    private static ArrayList<Word> random(ArrayList<Word> words) {
+        if (words.isEmpty()) return words;
+        ArrayList<Word> result = new ArrayList<>();
+        Random random = new Random();
+        int lastNumber = -1;
+        while (words.size() > 1) {
+            int randomNumber = random.nextInt(words.size());
+            if (lastNumber != -1 && lastNumber == randomNumber) {
+                continue;
             }
-        });
+            lastNumber = randomNumber;
+            result.add(words.get(randomNumber));
+            words.remove(randomNumber);
+        }
+        result.add(words.get(0));
+        return result;
+    }
+
+    @SuppressWarnings("Since15")
+    static ArrayList<Word> sort(ArrayList<Word> words, final HashMap<String, Integer> stats) {
+        long start = System.currentTimeMillis();
+        ArrayList<Word> yes = new ArrayList<>();
+        ArrayList<Word> no = new ArrayList<>();
+        ArrayList<Word> un = new ArrayList<>();
+        for (Word w : words) {
+            int n = nvl(stats.get(w.english), new Integer(0));
+            if (n == 0) un.add(w);
+            else if (n > 0) yes.add(w);
+            else if (n < 0) no.add(w);
+        }
+        System.out.println("group:" + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        no = random(no);
+        System.out.println("no:" + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        no.addAll(random(un));
+        System.out.println("un:" + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        no.addAll(random(yes));
+        System.out.println("yes:" + (System.currentTimeMillis() - start));
+
+        return no;
     }
 
     static void addStats(HashMap<String, Integer> stat, String word, Integer sign) {

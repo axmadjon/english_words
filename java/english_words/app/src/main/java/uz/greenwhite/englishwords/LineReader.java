@@ -24,8 +24,11 @@ public abstract class LineReader {
             while ((line = in.readLine()) != null) {
                 try {
                     String[] split = line.split(";");
-                    reader.read(split[0].trim(), split[1].trim(),
-                            split.length > 2 ? split[2].trim() : "", split.length > 3 ? split[3].trim() : "");
+                    String txt0 = split[0].trim();
+                    String txt1 = split.length > 1 ? split[1].trim() : "";
+                    String txt2 = split.length > 2 ? split[2].trim() : "";
+                    String txt3 = split.length > 3 ? split[3].trim() : "";
+                    reader.read(txt0, txt1, txt2, txt3);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Words.saveLog(line + "\n" + e.getMessage());

@@ -60,7 +60,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Word word = words.words.isEmpty() ? null : words.words.get(position - 1);
+        Word word = words.getWords().isEmpty() ? null : words.getWords().get(position - 1);
         switch (view.getId()) {
             case R.id.btn_yes:
                 if (word == null) return;
@@ -95,16 +95,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_bookmark:
                 if (word == null) return;
-                Words.saveLog("bookmark=" + word.english + "\n" + word.translation);
+                words.saveBookmark(word.english);
                 break;
         }
     }
 
     private void nextStep() {
-        if (position < words.words.size()) {
+        if (position < words.getWords().size()) {
             position++;
 
-            Word word = words.words.get(position - 1);
+            Word word = words.getWords().get(position - 1);
             ((TextView) findViewById(R.id.tv_text)).setText(aSwitch.isChecked() ? word.translation : word.english);
             ((TextView) findViewById(R.id.tv_answer)).setText(!aSwitch.isChecked() ? word.translation : word.english);
             ((TextView) findViewById(R.id.tv_reader)).setText(word.reader);
@@ -120,7 +120,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             findViewById(R.id.btn_answer).setVisibility(View.GONE);
             findViewById(R.id.tv_text).setVisibility(View.GONE);
         }
-        tvInfo.setText("" + position + "/" + words.words.size());
+        tvInfo.setText("" + position + "/" + words.getWords().size());
     }
 
     @Override
