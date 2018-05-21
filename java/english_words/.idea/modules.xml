@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\greenwhite\english_words\java\english_words\app\app.iml" filepath="C:\greenwhite\english_words\java\english_words\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/english_words.iml" filepath="$PROJECT_DIR$/english_words.iml" />
+      <module fileurl="file://C:\greenwhite\english_words\java\english_words\english_words.iml" filepath="C:\greenwhite\english_words\java\english_words\english_words.iml" />
     </modules>
   </component>
 </project>
